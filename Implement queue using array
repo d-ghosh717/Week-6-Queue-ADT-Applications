@@ -1,0 +1,34 @@
+Python ->
+class MyQueue:
+    def __init__(self):
+        self.queue = []
+        self.front = 0
+    def push(self, x):
+        self.queue.append(x)
+    def pop(self):
+        if self.front >= len(self.queue):
+            return -1
+        val = self.queue[self.front]
+        self.front += 1
+        if self.front > 1000:
+            self.queue = self.queue[self.front:]
+            self.front = 0
+        return val
+
+
+c-->
+struct MyQueue {
+    int arr[MAX];
+    int front, rear;
+};
+void initQueue(struct MyQueue* q) {
+    q->front = 0;
+    q->rear = 0;
+}
+void push(struct MyQueue* q, int x) {
+    q->arr[q->rear++] = x;
+}
+int pop(struct MyQueue* q) {
+    if (q->front == q->rear) return -1;
+    return q->arr[q->front++];
+}
