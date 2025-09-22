@@ -1,0 +1,50 @@
+Python ->
+class Solution:
+    def reverseFirstK(self, q, k):
+        if k > len(q) or k <= 0:
+            return q
+        stack = []
+        for _ in range(k):
+            stack.append(q.popleft())
+        while stack:
+            q.append(stack.pop())
+        size = len(q)
+        for _ in range(size - k):
+            q.append(q.popleft())
+        return q
+
+
+c -->
+typedef struct {
+    int arr[MAX];
+    int front, rear;
+} Queue;
+void initQueue(Queue* q) {
+    q->front = 0;
+    q->rear = 0;
+}
+void enqueue(Queue* q, int x) {
+    q->arr[q->rear++] = x;
+}
+int dequeue(Queue* q) {
+    if (q->front == q->rear) return -1; 
+    return q->arr[q->front++];
+}
+int size(Queue* q) {
+    return q->rear - q->front;
+}
+void reverseFirstK(Queue* q, int k) {
+    if (k > size(q) || k <= 0) return;
+    int stack[k];
+    int top = -1;
+    for (int i = 0; i < k; i++) {
+        stack[++top] = dequeue(q);
+    }
+    while (top >= 0) {
+        enqueue(q, stack[top--]);
+    }
+    int remaining = size(q) - k;
+    for (int i = 0; i < remaining; i++) {
+        enqueue(q, dequeue(q));
+    }
+}
